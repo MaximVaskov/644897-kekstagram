@@ -9,22 +9,23 @@ var createCard = function (index) {
     description: randomElement(descriptions),
     };
 };
+
 var randomElement = function (items) {
 var index = Math.floor(Math.random()*items.length);
     return items[index];
 };
 
 var getRandomElements = function (items) {
-    var randomNumber = Math.floor(Math.random()*(5 - 3 + 1) + 3);
+    var randomNumber = Math.floor((Math.random()<.5)+1);
     var randomItems= [];
-    for (var i = 0; i <= randomNumber; i++) {
+    for (var i = 0; i < randomNumber; i++) {
     var rItem = items[Math.floor(Math.random()*items.length)];
     randomItems.push(rItem);
     }
     return randomItems;
 };
 
-var countPhotos = 25;
+var countPhotos = 26;
 var photos = [];
 
 var fragment = document.createDocumentFragment();
@@ -37,22 +38,26 @@ for (var i = 0; i < countPhotos; i++) {
     photos.push(createCard(i));
 };
 
-for (var i=0; i < countPhotos; i++) {
+for (var i=1; i < countPhotos; i++) {
     var newElement = pictureTemplate.content.querySelector('.picture__link').cloneNode(true);
     var image = newElement.querySelector('img');
     image.src = photos[i].url;
+    var commentsCount= newElement.querySelector('.picture__stat--comments').textContent = photos[i].comments.length;
+    likesStat = newElement.querySelector('.picture__stat--likes').textContent =photos[i].likes;
     fragment.appendChild(newElement);
 };
 
 var pictures = document.querySelector('.pictures');
 pictures.appendChild(fragment);
 
-/*Исправить баг с картинками
-Кол-во лайков кол-во комментариев
-Функцию для случайного числа, принимать min и max
-Всплывающее окно на большое изображение
-5-ый пункт задания
-*/
+//Большое изображение:
 
+var bigPicture = document.querySelector('.big-picture').classList.remove('hidden');
+var bigPictureLikes = document.querySelector('.likes-count').textContent=likesStat;
+var bigPictureImg = document.querySelector('.big-picture__img');
+bigPictureImg.querySelector('img').src=image.src;
+var bigPictureComments = document.querySelector('.comments-count').textContent=commentsCount;
+var socialCaption = document.querySelector('.social__caption').textContent=randomElement(descriptions);
 
+var hiddenComments = document.querySelector('.social__comment-count', '.social__loadmore').classList.add('.visually-hidden');
 
